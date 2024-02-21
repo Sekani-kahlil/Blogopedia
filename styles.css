@@ -1,9 +1,9 @@
 body {
     font-family: 'Helvetica Neue' Arial, Helvetica, sans-serif;
     margin: 0;
-    background: linear-gradient(to left, lightblue, lightgreen);
+    background: linear-gradient(to left, rgb(162, 216, 234), rgb(182, 227, 182));
     padding: 0;
-}
+    }
 
 .container {
     width: 80%;
@@ -21,8 +21,66 @@ header h1 {
     margin: 0;
     font-size: 38px;
     text-align: center;
+    margin-top: 50px;
 }
 
+form {
+    width: 300px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.Sign {
+    text-align: center;
+    padding: 10px;
+    margin-top: 50px;
+}
+
+.Sign {
+    color: #ae2121;
+    font-size: 24px;
+}
+
+input[type="submit"] {
+    width: 100;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+p {
+    text-align: center;
+    text-decoration: none;
+}
+
+a {
+    color: #007bff;
+    text-decoration: underline;
+}
 nav  ul {
     list-style-type: none;
     margin: 0;
@@ -49,11 +107,10 @@ main {
 }
 
 .hero {
-    background-color: #f9f9f9;
+    background-color: #f0ecec;
     padding: 28px 0;
     text-align: center;
 }
-
 
 .hero h2 {
     margin-bottom: 10px;

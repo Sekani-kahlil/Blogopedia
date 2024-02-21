@@ -12,9 +12,9 @@
             <h1>Blogopedia</h1>
             <nav>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="https://www.example.com/home" target="_blank">Home</a></li>
+                    <li><a href="https://www.example.com/about" target="_blank">About</a></li>
+                    <li><a href="https:// www.example.com/Contact " target="_blank">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -27,6 +27,28 @@
                 <p> A place of discovering and sharing knowledge</p>
             </div>
         </section>
+
+            <div class="Sign"><h1>Sign In</h1></div>
+    <form action="" method="post" novalidate>
+        <input id="csrf_token" name="csrf_token" type="hidden" value="ImM1ZjMzZDI1ODBlN2EzYjUzOTJmODY5OGNkMDQ3OWM0ZDAwNGNkNzYi.ZdZPQQ.wQf1SjfQg_8-VCKQlkNuTm9OrzE">
+        <p>
+            <label for="email">Email</label><br>
+            <input id="email" name="email" required size="32" type="text" value=""><br>
+            
+        </p>
+        <p>
+            <label for="password">Password</label><br>
+            <input id="password" name="password" required size="32" type="password" value=""><br>
+            
+        </p>
+        <p><input id="remember_me" name="remember_me" type="checkbox" value="y"> <label for="remember_me">Remember Me</label></p>
+        <p><input id="submit" name="submit" type="submit" value="Sign In"></p>
+    </form>
+    <p>New User? <a href="/register">Click to Register!</a></p>
+    <p>
+        Forgot Your Password?
+        <a href="/reset_password_request">Click to Reset It</a>
+    </p>
 
         <section class="featured-posts">
             <div class="container">
