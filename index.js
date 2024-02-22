@@ -1,11 +1,12 @@
-const sectionEL = document.getElementsByClassName('hero')  
-document.addEventListener('DOMContentLoaded', function() {
-    // Your JavaScript code here
-    console.log('Document loaded');
-
-    // Example: change the color of the header on click
-    var header = document.querySelector('header');
-    header.addEventListener('click', function (){
-        header.style.backgroundColor = '#555'
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.querySelector("form");
+    
+    form.addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevents the default form submission behavior
+        
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        
+        alert("Email: " + email + "\nPassword: " + password);
     });
 });
