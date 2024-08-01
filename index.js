@@ -1,128 +1,79 @@
-// index.js
+const express = require('express');
+const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Handle form submission
-    const form = document.querySelector('form');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const rememberMeInput = document.getElementById('remember_me');
-    const submitButton = document.getElementById('submit');
+const app = express();
+const PORT = process.env.PORT || 3000;
+const SECRET_KEY = process.env.SECRET_KEY || 'your-secret-key';
 
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
+// Middleware
+app.use(bodyParser.json());
 
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-        const rememberMe = rememberMeInput.checked;
+// Dummy user data for demonstration
+const users = [{ id: 1, username: 'user1', password: 'password1' }];
 
-        // Simple validation
-        if (email === '' || password === '') {
-            alert('Please fill in all fields.');
-            return;
-        }
+// Sample data for posts
+const posts = [
+    {
+        title: 'Dynamic Post 1',
+        description: 'This is a dynamically added post description.',
+        imgSrc: 'path/to/dynamic-image1.jpg',
+        link: 'link/to/dynamic-post1'
+    },
+    {
+        title: 'Dynamic Post 2',
+        description: 'This is another dynamically added post description.',
+        imgSrc: 'path/to/dynamic-image2.jpg',
+        link: 'link/to/dynamic-post2'
+    },
+    {
+        title: 'Dynamic Post 3',
+        description: 'Yet another dynamic post added for demonstration.',
+        imgSrc: 'path/to/dynamic-image3.jpg',
+        link: 'link/to/dynamic-post3'
+    }
+];
 
-        // Simulate login functionality
-        alert(`Logged in with Email: ${email}\nPassword: ${password}\nRemember Me: ${rememberMe}`);
+// Login endpoint to get a token
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
 
-        // Clear the form
-        form.reset();
-    });
+    const user = users.find(u => u.username === username && u.password === password);
 
-    // Function to dynamically update featured and recent posts
-    const updatePosts = () => {
-        const featuredPostsContainer = document.querySelector('.posts-grid');
-        const recentPostsContainer = document.querySelector('.posts-list');
+    if (user) {
+        // Generate a token
+        const token = jwt.sign({ userId: user.id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+        res.json({ token });
+    } else {
+        res.status(401).json({ error: 'Invalid credentials' });
+    }
+});
 
-        const posts = [
-            {
-                title: 'Dynamic Post 1',
-                description: 'This is a dynamically added post description.',
-                imgSrc: 'path/to/dynamic-image1.jpg',
-                link: 'link/to/dynamic-post1'
-            },
-            {
-                title: 'Dynamic Post 2',
-                description: 'This is another dynamically added post description.',
-                imgSrc: 'path/to/dynamic-image2.jpg',
-                link: 'link/to/dynamic-post2'
-            },
-            {
-                title: 'Dynamic Post 3',
-                description: 'Yet another dynamic post added for demonstration.',
-                imgSrc: 'path/to/dynamic-image3.jpg',
-                link: 'link/to/dynamic-post3'
+// Middleware for authentication
+const authenticate = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+        jwt.verify(token, SECRET_KEY, (err, user) => {
+            if (err) {
+                console.error('Token verification failed:', err);
+                return res.status(403).json({ error: 'Forbidden' });
             }
-        ];
-
-        posts.forEach(post => {
-            // Create featured post item
-            const featuredPostItem = document.createElement('div');
-            featuredPostItem.className = 'post-item';
-            featuredPostItem.innerHTML = `
-                <img src="${post.imgSrc}" alt="Post Image">
-                <h3>${post.title}</h3>
-                <p>${post.description}</p>
-                <a href="${post.link}">Read more</a>
-            `;
-            featuredPostsContainer.appendChild(featuredPostItem);
-
-            // Create recent post item
-            const recentPostItem = document.createElement('div');
-            recentPostItem.className = 'post-item';
-            recentPostItem.innerHTML = `
-                <h3>${post.title}</h3>
-                <p>${post.description}</p>
-                <a href="${post.link}">Read more</a>
-            `;
-            recentPostsContainer.appendChild(recentPostItem);
+            req.user = user;
+            next();
         });
-    };
+    } else {
+        res.status(401).json({ error: 'Unauthorized' });
+    }
+};
 
-    // Update posts on page load
-    updatePosts();
+// Routes
+app.get('/posts', authenticate, (req, res) => {
+    res.json(posts);
+});
 
-    // Smooth scroll for navigation links
-    const navLinks = document.querySelectorAll('nav a');
-
-    navLinks.forEach(link => {
-        link.addEventListener('click', (event) => {
-            event.preventDefault();
-            const targetId = link.getAttribute('href').split('#')[1];
-            const targetElement = document.getElementById(targetId);
-
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-
-    // Interactivity: highlight input fields on focus
-    [emailInput, passwordInput].forEach(input => {
-        input.addEventListener('focus', () => {
-            input.style.borderColor = '#007BFF';
-            input.style.boxShadow = '0 0 5px rgba(0, 123, 255, 0.5)';
-        });
-
-        input.addEventListener('blur', () => {
-            input.style.borderColor = '#ccc';
-            input.style.boxShadow = 'none';
-        });
-    });
-
-    // Add animations to featured posts on hover
-    const postItems = document.querySelectorAll('.post-item');
-
-    postItems.forEach(item => {
-        item.addEventListener('mouseover', () => {
-            item.style.transform = 'scale(1.05)';
-            item.style.transition = 'transform 0.3s ease';
-        });
-
-        item.addEventListener('mouseout', () => {
-            item.style.transform = 'scale(1)';
-        });
-    });
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
