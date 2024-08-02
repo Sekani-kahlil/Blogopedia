@@ -1,0 +1,26 @@
+# Node modules directory
+node_modules/
+
+# Environment variables file
+.env
+
+# Logs
+logs/
+*.log
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Directory for OS-specific files
+.DS_Store
+
+# Build output directories
+dist/
+build/
+
+# IDE specific files
+.vscode/
+.idea/
